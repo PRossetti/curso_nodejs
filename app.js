@@ -46,6 +46,7 @@ app.get('*', (req, res) => {
 app.post('/login', (req, res) => {
     console.log(JSON.stringify(req.body));
     const user = new User({
+        username: undefined,
         email: req.body.email,
         password: req.body.password,
         password_confirmation: req.body.password_confirmation
@@ -54,7 +55,11 @@ app.post('/login', (req, res) => {
     console.log('password_confirmation: ', user.password_confirmation);
 
     // Guardo un nuevo documento en la colección
-    user.save(()=>{
+    user.save((err)=>{
+        if (err) {
+            console.log(String(err));
+        }
+        
         res.render('congrats', { title: 'Registrado!' });
     });
     // res.send('Mandaste fruta');

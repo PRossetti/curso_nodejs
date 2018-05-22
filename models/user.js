@@ -13,14 +13,25 @@ mongoose.connect('mongodb://localhost:27017/codigo-facilito');
     Ejemplo: Password Confirmation
 */
 
+/*
+    Las VALIDACIONES de mongoose se hacen a nivel del Schema
+    Los errores vienen en la función callback en un objeto de tipo ValidationError
+
+    Las validaciones no se aplican a tipos de datos undefined. Solo se les aplica "required"
+    A required le puedo pasar true, false o incluso un mensaje
+*/
+const sexEnum = ['M', 'F'];
+const emailMatch = [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'El email ingresado no es válido'];
+
 const user_schema = new Schema({
     name: String,
-    username: String,
-    password: String,
-    age: Number,
-    email: String,
-    date_of_bith: Date
-
+    last_name: String,
+    username: { type: String, required: 'El username es requerido', maxlength: 50 },
+    password: { type: String, minlength: [8, 'El password es muy corto'] },
+    age: { type: Number, min: [5, 'La edad no puede ser menor que 5'], max: 120 },
+    email: { type: String, required: true, match: emailMatch },
+    date_of_bith: Date,
+    sex: { type: String, enum: { values: sexEnum, message: 'Valor no admitido' } }
 });
 
 user_schema.virtual('password_confirmation')
