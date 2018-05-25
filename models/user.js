@@ -39,7 +39,7 @@ const user_schema = new Schema({
     username: { type: String, required: 'El username es requerido', maxlength: 50 },
     password: {
         type: String,
-        minlength: [8, 'El password es muy corto'],
+        minlength: [3, 'El password es muy corto'],
         validate: pswd_validation
     },
     age: { type: Number, min: [5, 'La edad no puede ser menor que 5'], max: 120 },

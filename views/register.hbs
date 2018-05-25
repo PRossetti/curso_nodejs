@@ -1,0 +1,22 @@
+<h1>{{ title }}</h1>
+<form action="/register" method="POST">
+    <label for="username"></label>
+    <div class="form-group">
+        <input type="text" name="username" placeholder="Nombre de usuario" />
+    </div>
+    <div class="form-group">
+        <label for="email"></label>
+        <input type="text" name="email" placeholder="Email" />
+    </div>
+    <div class="form-group">
+        <label for="password"></label>
+        <input type="password" name="password" placeholder="Contraseña" />
+    </div>
+    <div class="form-group">
+        <label for="password_confirmation"></label>
+        <input type="password" name="password_confirmation" placeholder="Confirmar contraseña" />
+    </div>
+    <div>
+        <input type="submit" value="Crear cuenta" class="btn btn-info" />
+    </div>
+</form>
