@@ -34,7 +34,6 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     // Leo toda la colección / tabla y me trae todos los documentos/registros
     User.find(((err, doc) => {
-        console.log(doc);
         res.render('login', { title: 'Pantalla de login' });
     }));
 });
@@ -46,13 +45,12 @@ app.get('*', (req, res) => {
 app.post('/login', (req, res) => {
     console.log(JSON.stringify(req.body));
     const user = new User({
-        username: undefined,
+        username: req.body.username,
         email: req.body.email,
         password: req.body.password,
         password_confirmation: req.body.password_confirmation
     });
-
-    console.log('password_confirmation: ', user.password_confirmation);
+    console.log(JSON.stringify(user));
 
     // Guardo un nuevo documento en la colección
     user.save((err)=>{

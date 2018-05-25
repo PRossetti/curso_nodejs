@@ -23,17 +23,32 @@ mongoose.connect('mongodb://localhost:27017/codigo-facilito');
 const sexEnum = ['M', 'F'];
 const emailMatch = [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'El email ingresado no es válido'];
 
+
+const pswd_validation = {
+    // validator tiene que retornar un booleano. this dentro de la función hace referencia al documento y la variable
+    // que recibe la función, en este caso p, es el campo que estamos validando
+    validator: function(p) {
+        return this.password_confirmation === p;
+    },
+    message: 'Las contraseñas no son iguales'
+}
+
 const user_schema = new Schema({
     name: String,
     last_name: String,
     username: { type: String, required: 'El username es requerido', maxlength: 50 },
-    password: { type: String, minlength: [8, 'El password es muy corto'] },
+    password: {
+        type: String,
+        minlength: [8, 'El password es muy corto'],
+        validate: pswd_validation
+    },
     age: { type: Number, min: [5, 'La edad no puede ser menor que 5'], max: 120 },
     email: { type: String, required: true, match: emailMatch },
     date_of_bith: Date,
     sex: { type: String, enum: { values: sexEnum, message: 'Valor no admitido' } }
 });
 
+// virtuals
 user_schema.virtual('password_confirmation')
     .get((() => {
         return this.p_c;
