@@ -74,5 +74,5 @@ const User = mongoose.model('User', user_schema);
     ObjectId
 */
 
-module.exports = { User };
+module.exports = User;
 

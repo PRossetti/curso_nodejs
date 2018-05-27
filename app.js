@@ -2,10 +2,15 @@
 const express = require('express');
 const hbs = require('express-handlebars');
 const bodyParser = require('body-parser');
-const User = require('./models/user').User;
+const User = require('./models/user');
 const session = require('express-session');
+const router_app = require('./router_app');
+const session_middleware = require('./middlewares/session');
 
 const app = express();
+
+// Para servir archivos estáticos
+app.use(express.static('public'));
 
 /*  BUENA PRÁCTICA
     os controladores deben ser delgados y los modelos deben ser gordos.
@@ -36,10 +41,6 @@ app.use(session({
 app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/' }));
 app.set('view engine', 'hbs');
 
-
-// Para servir archivos estáticos
-app.use(express.static('public'));
-
 app.get('/', (req, res) => {
     console.log(`Sesión en curso: ${req.session.user_id}`);
     res.render('index', { title: 'Qué onda amigo?', session: req.session.user_id });
@@ -58,11 +59,6 @@ app.get('/users', (req, res) => {
     User.find(((err, doc) => {
         res.render('congrats', { message: `${JSON.stringify(doc)}`, title: 'Usuagrios grabados en la base de datos' });
     }));
-});
-
-app.get('*', (req, res) => {
-    res.render('error', { message: 'Mandaste fruta' });
-    // res.send('Mandaste fruta');
 });
 
 app.post('/register', (req, res) => {
@@ -109,14 +105,20 @@ app.post('/session', (req, res) => {
             // usa un store de la librería  que no se recomienda para prod pq usa mucha memoria y es muy dificil escalarlo
             req.session.user_id = user._id;
             // al poner return, nunca llega al siguiente render
-            return res.render('congrats', { message: `Felicitaciones ${user.username} por haber ingresado a tu cuenta`, title: 'Ingresaste!' });
+            // return res.render('congrats', { message: `Felicitaciones ${user.username} por haber ingresado a tu cuenta`, title: 'Ingresaste!' });
+            return res.redirect('/app');
         }
         res.render('error', { message: 'Datos ingresados erroneos' });
     });
 
-
     // findById() se le pasa el _id que genera mongo
+});
 
+app.use('/app', session_middleware, router_app);
+
+app.get('*', (req, res) => {
+    res.render('error', { message: 'Mandaste fruta' });
+    // res.send('Mandaste fruta');
 });
 
 app.listen(8080, null, () => console.log('Estoy escuchando en el puerto 8080'));
