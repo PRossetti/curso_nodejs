@@ -1,0 +1,16 @@
+<div class="container ">
+    <h1>Mis imágenes</h1>
+    {{# each images}}
+    <div class="white border tr large-padding">
+        <div class="row">
+            <div class="col-md-10">
+                <h2>{{this.title}}</h2>
+            </div>
+            <div class="col-md-2">
+                <a href="/app/images/{{this._id}}/edit" class="right-space">Editar</a>
+                <a href="/app/images/{{this._id}}/delete">Eliminar</a>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>

@@ -3,7 +3,9 @@ const express = require('express');
 const hbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const User = require('./models/user');
-const session = require('express-session');
+// Guarda las sesiones en memoria por lo tanto cada vez que reiniciamos el servidor esa info se pierde
+// const session = require('express-session');
+const cookieSession = require('cookie-session');
 const router_app = require('./router_app');
 const session_middleware = require('./middlewares/session');
 
@@ -27,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // el único parámetro definido es el secret que nos permite generar identificadores para nuestra sesión únicos,
 // tiene que ser único a través de mis aplicaciones de node para que no haya un conflicto entre ellas
+/*
 app.use(session({
     secret: '123askldjvlaksmei13',
     // define si la sesión tiene que volverse a guardar en caso de que haya alguna modificación
@@ -36,13 +39,19 @@ app.use(session({
     // en false reduce el espacio que consume en el store las sesiones
     saveUninitialized: false,
 }));
+*/
+
+
+app.use(cookieSession({
+    name: 'session',
+    keys: ['llave-1','llave-2']
+}));
 
 // Para montar la view engine hbs
 app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/' }));
 app.set('view engine', 'hbs');
 
 app.get('/', (req, res) => {
-    console.log(`Sesión en curso: ${req.session.user_id}`);
     res.render('index', { title: 'Qué onda amigo?', session: req.session.user_id });
 });
 
