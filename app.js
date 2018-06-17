@@ -7,12 +7,14 @@ const User = require('./models/user');
 // const session = require('express-session');
 const cookieSession = require('cookie-session');
 const router_app = require('./router_app');
+const methodOverride = require('method-override');
 const session_middleware = require('./middlewares/session');
 
 const app = express();
 
 // Para servir archivos estáticos
 app.use(express.static('public'));
+app.use(methodOverride('_method')); // para aceptar el método PUT
 
 /*  BUENA PRÁCTICA
     os controladores deben ser delgados y los modelos deben ser gordos.

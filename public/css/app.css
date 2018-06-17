@@ -41,3 +41,19 @@ nav li a, nav li a:hover {
 .tr:nth-of-type(odd) {
     background-color: #eee;
 }
+
+form.link {
+    display: inline-block;
+}
+
+form.link input[type="submit"] {
+    background-color: transparent;
+    border: none;
+}
+
+form.link input[type="submit"] {
+    display: inline-block;
+    border: none;
+    color: rgb(200,50,50);
+    cursor: pointer;
+}

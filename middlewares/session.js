@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     User.findById(req.session.user_id, (err, user) => {
         console.log(`Fui a buscar el usuario con id ${req.session.user_id}`);
         if (err) {
-            console.log('Ocurrió un error inesperado');
+            console.log('[SESSION] Ocurrió un error inesperado');
             return res.render('error', { message: 'Ocurrió un error inesperado en el middleware de session' });
         }
         // Lo que se guarda en locals se puedea acceder directamente desde las vistas

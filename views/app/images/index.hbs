@@ -8,7 +8,7 @@
             </div>
             <div class="col-md-2">
                 <a href="/app/images/{{this._id}}/edit" class="right-space">Editar</a>
-                <a href="/app/images/{{this._id}}/delete">Eliminar</a>
+                <form action="/app/images/{{this._id}}?_method=DELETE" method="POST" class="link"><input type="submit" value="Eliminar" /></form>
             </div>
         </div>
     </div>
